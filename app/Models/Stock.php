@@ -14,6 +14,7 @@ class Stock extends Model
         'transaction_time',
         'product_id',
         'quantity',
+        'type',
         'total_price'
     ];
 

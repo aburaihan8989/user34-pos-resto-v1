@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'All Stocks')
+@section('title', 'Customers')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -11,18 +11,18 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Stocks</h1>
+                <h1>Customers</h1>
                 <div class="section-header-button">
                     @if ( auth()->user()->roles == "admin" )
-                        <a href="{{ route('stock.create') }}" class="btn btn-primary">Add Stock</a>
+                        <a href="{{ route('customer.create') }}" class="btn btn-primary">Add New</a>
                     @else
-                        <a href="#" class="btn btn-secondary">Add Stock</a>
+                        <a href="#" class="btn btn-secondary">Add New</a>
                     @endif
                 </div>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('home') }}">Dashboard</a></div>
-                    <div class="breadcrumb-item"><a href="{{ route('stock.index') }}">Stocks</a></div>
-                    <div class="breadcrumb-item">All Stocks</div>
+                    <div class="breadcrumb-item"><a href="{{ route('customer.index') }}">Customers</a></div>
+                    <div class="breadcrumb-item">All Customers</div>
                 </div>
             </div>
             <div class="section-body">
@@ -31,16 +31,16 @@
                         @include('layouts.alert')
                     </div>
                 </div>
-                <h2 class="section-title">Stocks</h2>
+                <h2 class="section-title">Customers</h2>
                 <p class="section-lead">
-                    You can add all Stocks, view history stocks and more.
+                    You can manage all Customers, such as editing, deleting and more.
                 </p>
 
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>All Stocks</h4>
+                                <h4>All Customers</h4>
                             </div>
                             <div class="card-body">
                                 {{-- <div class="float-left">
@@ -52,9 +52,9 @@
                                     </select>
                                 </div> --}}
                                 <div class="float-right">
-                                    <form method="GET" action="{{ route('stock.index') }}">
+                                    <form method="GET" action="{{ route('customer.index') }}">
                                         <div class="input-group">
-                                            <input type="date" class="form-control" placeholder="Search Name" name="transaction_time">
+                                            <input type="text" class="form-control" placeholder="Search Name" name="name">
                                             <div class="input-group-append">
                                                 <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                                             </div>
@@ -68,63 +68,43 @@
                                     <table class="table-striped table">
                                         <tr>
                                             <th>No</th>
-                                            <th>Transaction Time</th>
                                             <th>Name</th>
-                                            <th>Category</th>
-                                            <th>Quantity</th>
+                                            <th>Phone</th>
                                             <th>Total Price</th>
-                                            {{-- <th>Action</th> --}}
+                                            <th>Total Bayar</th>
+                                            <th>Sisa Tagihan</th>
+                                            <th>Created At</th>
+                                            <th>Action</th>
                                         </tr>
                                         <?php $no = 1; ?>
-                                        @foreach ($products as $data)
+                                        @foreach ($customers as $customer)
                                             <tr>
                                                 <td>
-                                                    {{ $loop->iteration + $products->firstItem() - 1 }}
+                                                    {{ $loop->iteration + $customers->firstItem() - 1 }}
                                                 </td>
                                                 <td>
-                                                    {{ $data->transaction_time }}
+                                                    {{ $customer->name }}
                                                 </td>
                                                 <td>
-                                                    {{ $data->name }}
-                                                </td>
-
-                                                <td>
-                                                    {{-- {{ $product->category }} --}}
-                                                    @if ($data->category == 'minuman')
-                                                        Minuman
-                                                    @elseif ($data->category == 'makanan')
-                                                        Makanan
-                                                    @elseif ($data->category == 'other')
-                                                        Other
-                                                    @endif
+                                                    {{ $customer->phone }}
                                                 </td>
                                                 <td>
-                                                    {{ $data->quantity }}
+                                                    Rp. {{ number_format(($customer->total_price), 0, ",", ".") }}
                                                 </td>
                                                 <td>
-                                                    Rp. {{ number_format(($data->total_price), 0, ",", ".") }}
+                                                    Rp. {{ number_format(($customer->total_bayar), 0, ",", ".") }}
                                                 </td>
-                                                {{-- <td>
-                                                    @if ($product->image)
-                                                        <img src="{{ asset('storage/products/'.$product->image) }}" alt=""
-                                                            width="100px" class="img-thumbnail">
-                                                            @else
-                                                            <span class="badge badge-danger">No Image</span>
-                                                    @endif
-                                                </td> --}}
-                                                {{-- <td>
-                                                    {{ $product->created_at }}
-                                                </td> --}}
-                                                {{-- <td>
+                                                <td>
+                                                    Rp. {{ number_format(($customer->total_price-$customer->total_bayar), 0, ",", ".") }}
+                                                </td>
+                                                <td>
+                                                    {{ $customer->created_at }}
+                                                </td>
+                                                <td>
                                                     <div class="d-flex">
                                                         @if ( auth()->user()->roles == "admin" )
-                                                            {{-- <a href='{{ route('product.edit', $product->id) }}'
-                                                                class="btn btn-sm btn-info btn-icon">
-                                                                <i class="fas fa-edit"></i>
-                                                                Edit
-                                                            </a>
-                                                            <a href='#'
-                                                                class="btn btn-sm btn-secondary btn-icon">
+                                                            <a href='{{ route('customer.edit', $customer->id) }}'
+                                                                class="btn btn-sm btn-primary btn-icon">
                                                                 <i class="fas fa-edit"></i>
                                                                 Edit
                                                             </a>
@@ -136,25 +116,32 @@
                                                             </a>
                                                         @endif
 
-                                                        <form action="#">
-                                                        {{-- <form action="{{ route('product.destroy', $product->id) }}"
-                                                            method="POST" class="ml-2"> --}}
-                                                            {{-- <input type="hidden" name="_method" value="DELETE" />
-                                                            <input type="hidden" name="_token"
-                                                                value="{{ csrf_token() }}" />
-                                                            <button class="btn btn-sm btn-secondary btn-icon confirm-delete ml-2">
-                                                                <i class="fas fa-times"></i> Delete
-                                                            </button>
-                                                        </form>
+                                                        @if ( auth()->user()->roles == "admin" )
+                                                            <form action="{{ route('customer.destroy', $customer->id) }}"
+                                                                method="POST" class="ml-2">
+                                                                <input type="hidden" name="_method" value="DELETE" />
+                                                                <input type="hidden" name="_token"
+                                                                    value="{{ csrf_token() }}" />
+                                                                    <button class="btn btn-sm btn-danger btn-icon confirm-delete ml-2">
+                                                                    <i class="fas fa-times"></i> Delete
+                                                                </button>
+                                                            </form>
+                                                        @else
+                                                            <a href='#'
+                                                                class="btn btn-sm btn-secondary btn-icon ml-2">
+                                                                <i class="fas fa-times"></i>
+                                                                Delete
+                                                            </a>
+                                                        @endif
                                                     </div>
-                                                </td> --}}
+                                                </td>
                                             </tr>
                                             <?php $no++; ?>
                                         @endforeach
                                     </table>
                                 </div>
                                 <div class="float-right">
-                                    {{ $products->withQueryString()->links() }}
+                                    {{ $customers->withQueryString()->links() }}
                                 </div>
                             </div>
                         </div>

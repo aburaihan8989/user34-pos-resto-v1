@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'All Stocks')
+@section('title', 'Stocks Opname')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -11,18 +11,18 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Stocks</h1>
+                <h1>Stocks Opname</h1>
                 <div class="section-header-button">
                     @if ( auth()->user()->roles == "admin" )
-                        <a href="{{ route('stock.create') }}" class="btn btn-primary">Add Stock</a>
+                        <a href="{{ route('stock-opname.create') }}" class="btn btn-primary">Stock Opname</a>
                     @else
-                        <a href="#" class="btn btn-secondary">Add Stock</a>
+                        <a href="#" class="btn btn-secondary">Stock Opname</a>
                     @endif
                 </div>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('home') }}">Dashboard</a></div>
-                    <div class="breadcrumb-item"><a href="{{ route('stock.index') }}">Stocks</a></div>
-                    <div class="breadcrumb-item">All Stocks</div>
+                    <div class="breadcrumb-item"><a href="{{ route('stock-opname.index') }}">Stocks Opname</a></div>
+                    <div class="breadcrumb-item">Stocks Opname</div>
                 </div>
             </div>
             <div class="section-body">
@@ -31,16 +31,16 @@
                         @include('layouts.alert')
                     </div>
                 </div>
-                <h2 class="section-title">Stocks</h2>
+                <h2 class="section-title">Stocks Opname</h2>
                 <p class="section-lead">
-                    You can add all Stocks, view history stocks and more.
+                    You can add all Stocks Opname, view history stocks and more.
                 </p>
 
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>All Stocks</h4>
+                                <h4>Stocks Opname</h4>
                             </div>
                             <div class="card-body">
                                 {{-- <div class="float-left">
@@ -52,7 +52,7 @@
                                     </select>
                                 </div> --}}
                                 <div class="float-right">
-                                    <form method="GET" action="{{ route('stock.index') }}">
+                                    <form method="GET" action="{{ route('stock-opname.index') }}">
                                         <div class="input-group">
                                             <input type="date" class="form-control" placeholder="Search Name" name="transaction_time">
                                             <div class="input-group-append">
